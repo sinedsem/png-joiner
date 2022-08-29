@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 public class Joiner {
 
     public static final int MAX_WIDTH = 8;
-    public static final int MARGIN = 1;
+    public static final int MARGIN = 2;
     public static final File PATH = new File("");
-    public static final File IN_PATH = new File("C:\\Users\\Denis\\Downloads\\Telegram Desktop\\blue\\blue_main_ray_01");
-    public static final File OUT_PATH = new File("C:\\unity\\Murphy Defense at SibGameJam\\Assets\\Sprites\\Towers\\Blue");
+    public static final File IN_PATH = new File("C:\\unity\\Murphy Defense at SibGameJam\\Assets\\Sprites\\Towers\\1 red\\red_lights_01");
+    public static final File OUT_PATH = new File("C:\\unity\\Murphy Defense at SibGameJam\\Assets\\Sprites\\Towers\\1 red");
 
     public static void main(String[] args) throws Exception {
 //        buttonWithTextAndDisabled();
@@ -43,8 +43,8 @@ public class Joiner {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        int width = images.get(0).getWidth();
-        int height = images.get(0).getHeight();
+        int width = multipleOf4(images.stream().mapToInt(BufferedImage::getWidth).max().orElse(0));
+        int height = multipleOf4(images.stream().mapToInt(BufferedImage::getHeight).max().orElse(0));
 
         int rows = (int) Math.ceil(images.size() / (double) MAX_WIDTH);
         int cols = Math.min(MAX_WIDTH, images.size());
@@ -61,7 +61,8 @@ public class Joiner {
                 if (index >= images.size()) {
                     break outer;
                 }
-                g.drawImage(images.get(index), j * (width + MARGIN), i * (height + MARGIN), null);
+                BufferedImage img = images.get(index);
+                g.drawImage(img, j * (width + MARGIN) + (width - img.getWidth()) / 2, i * (height + MARGIN) + (height - img.getHeight()) / 2, null);
             }
         }
 
